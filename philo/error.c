@@ -34,6 +34,12 @@ void	ft_free_philo(t_philo *philo)
 {
 	if (!philo)
 		return ;
+	pthread_mutex_destroy(philo->dead_access);
+	pthread_mutex_destroy(philo->end_access);
+	pthread_mutex_destroy(philo->print_access);
+	free(philo->dead_access);
+	free(philo->end_access);
+	free(philo->print_access);
 	if (philo->philosophers)
 		ft_free_philosophers(philo);
 	free(philo);

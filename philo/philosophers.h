@@ -38,8 +38,10 @@ typedef struct s_philo
 	time_t			time_to_die;
 	time_t			time_to_eat;
 	time_t			time_to_sleep;
+	pthread_mutex_t	*dead_access;
+	pthread_mutex_t	*end_access;
+	pthread_mutex_t	*print_access;
 	int				is_dead;
-	int				end;
 	int				goal_eat;
 	t_philosopher	**philosophers;
 }				t_philo;
@@ -85,8 +87,7 @@ time_t	ft_get_time(void);
 * * * * * * */
 
 t_philo	*ft_wait_threads(t_philo *philo);
-void	*ft_end_thread(int isdead, t_philosopher *philosopher, t_philo *philo);
-void	ft_print_thread(char *msg, int id, t_philo *philo);
+void	ft_print_thread(char *msg, t_philosopher *philosopher, t_philo *philo);
 t_philo	*ft_launch(t_philo *philo);
 
 /* * * * * * *
@@ -95,5 +96,8 @@ t_philo	*ft_launch(t_philo *philo);
 
 void	*ft_routine(void *data);
 int		ft_isdead(t_philosopher *philosopher, t_philo *philo);
+int		ft_dead_access(t_philo *philo);
+int		ft_lock_mutexs(t_philosopher *philosopher, t_philo *philo);
+void	*ft_lonely_philo(t_philosopher *philosopher, t_philo *philo);
 
 #endif

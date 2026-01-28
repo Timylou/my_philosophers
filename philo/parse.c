@@ -6,7 +6,7 @@
 /*   By: yel-mens <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 16:27:50 by yel-mens          #+#    #+#             */
-/*   Updated: 2025/07/09 16:27:50 by yel-mens         ###   ########.fr       */
+/*   Updated: 2025/10/07 09:45:03 by yel-mens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,15 @@ static t_philo	*ft_init_philo(void)
 	philo->is_dead = 0;
 	philo->goal_eat = -1;
 	philo->philosophers = NULL;
+	philo->dead_access = malloc(sizeof(pthread_mutex_t));
+	if (!philo->dead_access || pthread_mutex_init(philo->dead_access, NULL))
+		return (ft_error(philo, "Mutex cannot init\n"));
+	philo->end_access = malloc(sizeof(pthread_mutex_t));
+	if (!philo->end_access || pthread_mutex_init(philo->end_access, NULL))
+		return (ft_error(philo, "Mutex cannot init\n"));
+	philo->print_access = malloc(sizeof(pthread_mutex_t));
+	if (!philo->print_access || pthread_mutex_init(philo->print_access, NULL))
+		return (ft_error(philo, "Mutex cannot init\n"));
 	return (philo);
 }
 
@@ -50,7 +59,7 @@ static t_philo	*ft_init_argv(int argc, char **argv, t_philo *philo)
 	philo->goal_eat = -1;
 	if (argc == 6)
 		philo->goal_eat = ft_atoi(argv[5]);
-	if (philo->goal_eat < 0 && argc != 6)
+	if (philo->goal_eat < 0 && argc == 6)
 		return (ft_error(philo, "Arguments must have only digits\n"));
 	eat_plus_sleep = philo->time_to_eat + philo->time_to_sleep;
 	philo->time_to_think = philo->time_to_die - eat_plus_sleep;

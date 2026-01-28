@@ -14,7 +14,7 @@
 
 void	ft_wait_start(time_t start_time, int id)
 {
-	while (ft_get_time() < start_time + (id % 2) * 50)
+	while (ft_get_time() < start_time + (id % 2) * 20)
 		;
 }
 
